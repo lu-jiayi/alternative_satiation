@@ -1,7 +1,7 @@
 var order = 1;
 var block = 1;
+exp_mode_array = ["a","b"]
 
-var exp_mode = "b"
 // Function to generate a random integer between min and max (inclusive)
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -15,31 +15,48 @@ function shuffleArray(array) {
     }
     return array;
 }
-
+var exp_mode = shuffleArray(exp_mode_array)[0];
 // Initialize a list of 10 lists
 const listOfLists = [];
 
 // Create arrays for each range
-const range1 = Array.from({ length: 10 }, (_, index) => index + 1);
-const range2 = Array.from({ length: 10 }, (_, index) => index + 11);
-const range3 = Array.from({ length: 10 }, (_, index) => index + 21);
-const range4 = Array.from({ length: 10 }, (_, index) => index + 31);
+const range1 = Array.from({ length: 5 }, (_, index) => index + 1);
+const range2 = Array.from({ length: 5 }, (_, index) => index + 11);
+const range3 = Array.from({ length: 5 }, (_, index) => index + 21);
+const range4 = Array.from({ length: 5 }, (_, index) => index + 31);
+const range5 = Array.from({ length: 5 }, (_, index) => index + 1);
+const range6 = Array.from({ length: 5 }, (_, index) => index + 11);
+const range7 = Array.from({ length: 5 }, (_, index) => index + 21);
+const range8 = Array.from({ length: 5 }, (_, index) => index + 31);
 
 // Shuffle arrays to ensure randomness
 const shuffledRange1 = range1.sort(() => Math.random() - 0.5);
 const shuffledRange2 = range2.sort(() => Math.random() - 0.5);
 const shuffledRange3 = range3.sort(() => Math.random() - 0.5);
 const shuffledRange4 = range4.sort(() => Math.random() - 0.5);
+const shuffledRange5 = range5.sort(() => Math.random() - 0.5);
+const shuffledRange6 = range6.sort(() => Math.random() - 0.5);
+const shuffledRange7 = range7.sort(() => Math.random() - 0.5);
+const shuffledRange8 = range8.sort(() => Math.random() - 0.5);
+
 
 // Create lists with one number from each range
 for (let i = 0; i < 10; i++) {
-  const list = [
+  let list;
+  if (i < 5){
+   list = [
       shuffledRange1[i],
       shuffledRange2[i],
       shuffledRange3[i],
       shuffledRange4[i]
-  ];
-
+  ];} else {
+   list = [
+      shuffledRange5[i-5],
+      shuffledRange6[i-5],
+      shuffledRange7[i-5],
+      shuffledRange8[i-5]
+      
+  ]; }
   // Add one number from range 41-50 without repeating
   let newNumber1 = getRandomInt(41, 50);
   while (list.includes(newNumber1)) {
@@ -56,6 +73,8 @@ for (let i = 0; i < 10; i++) {
 
   listOfLists.push(list);
 }
+
+
 
 // Append "a" or "b" to the numbers based on sublist index
 if (exp_mode == "a"){
@@ -309,6 +328,7 @@ function make_slides(f) {
     log_responses : function() {
       exp.data_trials.push({
         // item-specific fields
+        "mode" : exp_mode,
         "response" : exp.sliderPost,
         "sentence_text": this.stim.sentence,
         "condition" : this.stim.condition,
