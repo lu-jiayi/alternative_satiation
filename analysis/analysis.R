@@ -22,7 +22,7 @@ data_no_practice <- filter(data, is.na(block_num) == FALSE)
 
 data_no_practice = data_no_practice%>%
   mutate(new_block = if_else(block_num < 6, block_num, block_num - 5))%>%
-  filter(alt_status == "target")%>%
+  filter(alt_status %in% c("target","gram", "ungram"))%>%
   mutate(new_mode = if_else(mode == "a", "target-first", "alternative-first"))
 
 trial_means = data_no_practice %>%
@@ -39,3 +39,10 @@ satiation_plot1 <- ggplot(data_no_practice, aes(x=new_block, y=response, color =
 
 satiation_plot1
 
+data_no_practice$new_mode <- as.factor(data_no_practice$new_mode)
+data_no_practice$condition <- relevel(as.factor(data_no_practice$condition), ref = "GRAM")
+
+contrasts(data_no_practice$new_mode) <- contr.sum(2)
+model <- lmer(response~condition*new_block*new_mode + 
+                (1|workerid), data = data_no_practice)
+summary(model)
